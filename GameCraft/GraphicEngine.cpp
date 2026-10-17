@@ -1,4 +1,3 @@
-// link the 2d game library
 #if defined(_DEBUG)
 	#if defined(_M_X64) // 64-bit 아키텍처
 		#pragma comment(lib, "glc2d_x64_debug.lib")
@@ -26,19 +25,27 @@ int GraphicEngine::Render()
 	return g_pApp->Render();
 }
 
-int GraphicEngine::Init()
+void GraphicEngine::SetColor(unsigned long color)
 {
-	// sdk 초기화
+	g2_SetClearColor(color);
+}
+
+int GraphicEngine::Init(const GAME_WINDOW& gameWindow)
+{
 	g2_InitSdk();
-	
 
-	g2_SetRender(Render);
-	g2_SetFrameMove(Update);
+	g2_SetFrameMove(GraphicEngine::Update);
+	g2_SetRender(GraphicEngine::Render);
 
-
-	// 윈도우 생성
-	g2_CreateWin(100, 100, 1024, 600, "My First Game Window");
-
+	g2_CreateWin(
+		gameWindow.x,
+		gameWindow.y,
+		gameWindow.scnW, 
+		gameWindow.scnH, 
+		gameWindow.name.c_str(), 
+		gameWindow.bWindowed, 
+		gameWindow.scnScale
+	);
 	return 0;
 }
 
@@ -46,6 +53,7 @@ void GraphicEngine::Destroy()
 {
 	g2_DestroyWin();
 }
+
 
 int GraphicEngine::Run()
 {
