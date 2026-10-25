@@ -23,7 +23,7 @@ protected:
 	GraphicEngine::GAME_WINDOW m_gameWin
 	{
 		120, 50,
-		960, 600,
+		1024, 600,
 		"GameTitle",
 		true,
 		1.0f

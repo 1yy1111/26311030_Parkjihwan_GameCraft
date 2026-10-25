@@ -1,6 +1,7 @@
 #include "App.h"
 #include "GameInput.h"
 #include "GameScene.h"
+#include "SceneBegin.h"
 
 App::App()
 {
@@ -32,8 +33,9 @@ int App::Init()
 		Destroy();
 		return -1;
 	}
+
 	// GameScene ÃÊ±âÈ­
-	m_pGameScene = new GameScene;
+	m_pGameScene = new SceneBegin;
 	if (0 > m_pGameScene->Init())
 	{
 		Destroy();
