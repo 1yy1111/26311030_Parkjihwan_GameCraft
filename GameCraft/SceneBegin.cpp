@@ -2,12 +2,12 @@
 
 int SceneBegin::Init()
 {
-
-    return 0;
+    return GameScene::Init();
 }
 
 void SceneBegin::Destroy()
 {
+    GameScene::Destroy();
 }
 
 int SceneBegin::Update()
@@ -17,5 +17,5 @@ int SceneBegin::Update()
 
 int SceneBegin::Render()
 {
-    return 0;
+    return GameScene::Render();
 }

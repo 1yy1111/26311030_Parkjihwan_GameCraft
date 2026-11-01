@@ -33,6 +33,9 @@
     <ClCompile Include="SceneBegin.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="GameScene.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

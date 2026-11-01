@@ -1,5 +1,4 @@
 #include "GameInput.h"
-#include <glc2d.h>
 
 int GameInput::Init()
 {
@@ -57,4 +56,15 @@ bool GameInput::IsEnterPressed() const
 bool GameInput::IsEscPressed() const
 {
 	return m_escPressed;
+}
+
+int GameInput::	GetKeyState(KEYCODE keyCode) const
+{
+	auto keys = g2_GetKeyboard();			// Å°º¸µå(0~255)
+	return keys[keyCode];
+}
+
+int GameInput::GetMouseEvent(int nMouse) const
+{
+	return g2_GetMouseEvent(nMouse);
 }

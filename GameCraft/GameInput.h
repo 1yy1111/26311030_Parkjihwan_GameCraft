@@ -1,4 +1,5 @@
 #pragma once
+#include <glc2d.h>
 
 class GameInput
 {
@@ -12,6 +13,9 @@ public:
 	bool IsEnterPressed() const;
 	bool IsEscPressed() const;
 
+	int GetKeyState(KEYCODE keyCode) const;
+	int GetMouseEvent(int nMouse) const;
+
 private:
 	bool m_moveLeft		{};
 	bool m_moveRight	{};
@@ -19,3 +23,5 @@ private:
 	bool m_enterPressed	{};
 	bool m_escPressed	{};
 };
+
+extern GameInput* GetGameInput();

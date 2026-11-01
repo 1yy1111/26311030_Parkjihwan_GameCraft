@@ -1,9 +1,10 @@
 #pragma once
+#include <vector>
 #include "GameTime.h"
 #include "GraphicEngine.h"
+#include "GameScene.h"
 
 class GameInput;
-class GameScene;
 
 class App
 {
@@ -11,13 +12,16 @@ public:
 	App();
 	virtual ~App();
 
-public:
 	int Init();
 	void Destroy();
 	int Update();
 	int Render();
 
 	int Run();
+
+public:
+	void ChangeScene(GAME_PHASE nextScene);
+	long long GetDeltaTime() const;
 
 protected:
 	GraphicEngine::GAME_WINDOW m_gameWin
@@ -32,7 +36,12 @@ protected:
 	GraphicEngine m_graphicEngine{};
 	GameTime	m_gameTime		 {};
 	GameInput*	m_pGameInput	 {};
-	GameScene*	m_pGameScene	 {};
+
+	std::vector<GameScene*> m_sceneList;
+	GameScene* m_pGameScene		{};
+	bool       m_sceneChanged	{};
+	GAME_PHASE m_sceneCurrent{ SCENE_BEGIN };
+	GAME_PHASE m_sceneNext		{};
 
 };
 

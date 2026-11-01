@@ -3,91 +3,146 @@
 #include "GameScene.h"
 #include "SceneBegin.h"
 
+App* g_pApp{ nullptr };
+
 App::App()
 {
+    g_pApp = this;
 
+    m_pGameInput = new GameInput;
+
+    m_sceneList.push_back(new SceneBegin);
+    m_sceneList.push_back(nullptr); // ScenePlay
+    m_sceneList.push_back(nullptr); // SceneResult
+
+    m_pGameScene = m_sceneList[m_sceneCurrent];
 }
 
 App::~App()
 {
-
+    if (this == g_pApp)
+    {
+        g_pApp = nullptr;
+    }
 }
 
 int App::Init()
 {
-	// Glc2d 초기화
-	if (0 > m_graphicEngine.Init(m_gameWin))
-	{
-		return -1;
-	}
-	m_graphicEngine.SetColor(0xFF006699);
+    // glc2d 초기화
+    if (0 > m_graphicEngine.Init(m_gameWin))
+    {
+        return -1;
+    }
 
+    m_graphicEngine.SetColor(0xFF006699);
 
-	// GameTime 초기화
-	m_gameTime.Init();
+    // GameTime 초기화
+    m_gameTime.Init();
 
-	// Input 초기화
-	m_pGameInput = new GameInput;
-	if (0 > m_pGameInput->Init())
-	{
-		Destroy();
-		return -1;
-	}
+    // GameInput 초기화
+    if (0 > m_pGameInput->Init())
+    {
+        Destroy();
+        return -2;
+    }
 
-	// GameScene 초기화
-	m_pGameScene = new SceneBegin;
-	if (0 > m_pGameScene->Init())
-	{
-		Destroy();
-		return -1;
-	}
+    // GameScene 초기화
+    if (0 > m_pGameScene->Init())
+    {
+        Destroy();
+        return -3;
+    }
 
-	return 0;
+    return 0;
 }
 
 void App::Destroy()
 {
-	if (m_pGameInput)
-	{
-		delete m_pGameInput; m_pGameInput = nullptr;
-	}
-	if (m_pGameScene)
-	{
-		delete m_pGameScene; m_pGameScene = nullptr;
-	}
+    if (nullptr != m_pGameScene)
+    {
+        m_pGameScene->Destroy();
+        m_pGameScene = nullptr;
+    }
+
+    for (GameScene* pScene : m_sceneList)
+    {
+        delete pScene;
+    }
+
+    m_sceneList.clear();
+
+    GameScene::ReleaseResources();
+
+    if (nullptr != m_pGameInput)
+    {
+        delete m_pGameInput;
+        m_pGameInput = nullptr;
+    }
+
+    m_graphicEngine.Destroy();
 }
 
-int  App::Update()
+int App::Update()
 {
-	// GameTime 업데이트
-	m_gameTime.Update();
+    // Scene 전환
+    if (m_sceneChanged)
+    {
+        m_pGameScene->Destroy();
 
-	// Input 업데이트
-	if (0 > m_pGameInput->Update())
-	{
-		return -1;
-	}
+        m_sceneChanged = false;
+        m_sceneCurrent = m_sceneNext;
+        m_pGameScene = m_sceneList[m_sceneCurrent];
 
-	// GameScene 업데이트
-	if (0 > m_pGameScene->Update())
-	{
-		return -1;
-	}
+        if (0 > m_pGameScene->Init())
+        {
+            return -1;
+        }
+    }
 
-	return 0;
+    // GameTime 업데이트
+    m_gameTime.Update();
+
+    // GameInput 업데이트
+    if (0 > m_pGameInput->Update())
+    {
+        return -1;
+    }
+
+    // GameScene 업데이트
+    if (0 > m_pGameScene->Update())
+    {
+        return -1;
+    }
+
+    return 0;
 }
 
 int App::Render()
 {
-	// GameScene 렌더링
+    if (0 > m_pGameScene->Render())
+    {
+        return -1;
+    }
 
-	return 0;
+    return 0;
 }
 
 int App::Run()
 {
-	m_graphicEngine.Run();
+    m_graphicEngine.Run();
 
-	this->Destroy();
-	return 0;
+    Destroy();
+
+    return 0;
+}
+
+void App::ChangeScene(GAME_PHASE nextScene)
+{
+    m_sceneChanged = true;
+    m_sceneNext = nextScene;
+}
+
+long long App::GetDeltaTime() const
+{
+    return m_gameTime.GetDeltaTime();
 }
