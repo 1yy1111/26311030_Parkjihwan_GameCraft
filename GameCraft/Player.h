@@ -1,19 +1,14 @@
 #pragma once
+#include "Character.h"
 
-class Player
+class Player : public Character
 {
 public:
-    int Init();
-    void Destroy();
-    int Update();
-    int Render();
+    int Init() override;
+    void Destroy() override;
+    int Update() override;
+    int Render() override;
 
 private:
     int m_txPlayer{ -1 };
-
-    float m_posX{};
-    float m_posY{};
-
-    float m_speed{ 300.0f };
-    float m_scale{ 0.7f };
 };

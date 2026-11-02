@@ -20,12 +20,13 @@ int Player::Init()
         return -1;
     }
 
+    m_scale = 0.7f;
+
     float playerWidth
     {
         g2_TextureWidth(m_txPlayer) * m_scale
     };
 
-    // 화면 가로 중앙에서 시작
     m_posX = (g2_GetScnW() - playerWidth) / 2.0f;
     m_posY = PLAYER_Y;
 
@@ -47,12 +48,12 @@ int Player::Update()
 
     if (GetGameInput()->IsMoveLeft())
     {
-        m_posX -= m_speed * deltaTime;
+        Move(-1.0f, deltaTime);
     }
 
     if (GetGameInput()->IsMoveRight())
     {
-        m_posX += m_speed * deltaTime;
+        Move(1.0f, deltaTime);
     }
 
     m_posX = std::clamp(m_posX, PLAYER_MIN_X, PLAYER_MAX_X);
