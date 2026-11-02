@@ -1,7 +1,17 @@
 #include "GameInput.h"
 
+
+static GameInput* g_input;
+
+GameInput* GetGameInput()
+{
+	return g_input;
+}
+
 int GameInput::Init()
 {
+	g_input = this;
+
 	m_moveLeft = false;
 	m_moveRight = false;
 	m_shootPressed = false;

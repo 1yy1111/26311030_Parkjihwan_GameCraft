@@ -19,7 +19,7 @@ int GameScene::Init()
 
     if (0 > m_font)
     {
-        m_font = g2_FontCreate("NeoµÕ±Ù¸ğ", 20);
+        m_font = g2_FontCreate("NeoµÕ±Ù¸ğ", 40);
     }
 
     if (0 > m_bgm)
