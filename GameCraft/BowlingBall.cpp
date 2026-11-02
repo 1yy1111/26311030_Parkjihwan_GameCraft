@@ -80,9 +80,6 @@ int BowlingBall::Update()
         m_animTimer -= BALL_ANIM_INTERVAL;
     }
 
-    // 볼링공 이동
-    m_posY += m_speed * (deltaTime / 1000.0f);
-
     // 이동 전 진행률
     float progress
     {
