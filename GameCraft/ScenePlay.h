@@ -1,6 +1,7 @@
 #pragma once
 #include "GameScene.h"
 #include "Player.h"
+#include "BowlingBall.h"
 
 class ScenePlay : public GameScene
 {
@@ -12,5 +13,6 @@ public:
 
 private:
     Player m_player{};
+    BowlingBall m_ball{};
 };
 

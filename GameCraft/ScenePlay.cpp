@@ -12,17 +12,34 @@ int ScenePlay::Init()
         return -1;
     }
 
+    if (0 > m_ball.Init())
+    {
+        m_player.Destroy();
+        return -1;
+    }
+
     return 0;
 }
 
 void ScenePlay::Destroy()
 {
+    m_ball.Destroy();
     m_player.Destroy();
 }
 
 int ScenePlay::Update()
 {
-    return m_player.Update();
+    if (0 > m_player.Update())
+    {
+        return -1;
+    }
+
+    if (0 > m_ball.Update())
+    {
+        return -1;
+    }
+
+    return 0;
 }
 
 int ScenePlay::Render()
@@ -32,5 +49,10 @@ int ScenePlay::Render()
         return -1;
     }
 
-    return m_player.Render();
+    
+    m_ball.Render();
+    
+    m_player.Render();
+
+    return 0;
 }
