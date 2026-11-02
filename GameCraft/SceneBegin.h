@@ -14,7 +14,6 @@ private:
     int m_txTitle{ -1 };
     std::string m_startText{ "PRESS ENTER TO START" };
 
-    static constexpr long long BLINK_INTERVAL{ 500 };
     long long m_blinkTimer{};
     bool m_isTextVisible {};
 };

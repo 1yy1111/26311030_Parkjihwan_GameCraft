@@ -3,6 +3,11 @@
 #include "App.h"
 #include "GameInput.h"
 
+namespace
+{
+    constexpr long long BLINK_INTERVAL{ 500 };
+}
+
 int SceneBegin::Init()
 {
     if (0 > GameScene::Init())

@@ -2,6 +2,7 @@
 #include "GameInput.h"
 #include "GameScene.h"
 #include "SceneBegin.h"
+#include "ScenePlay.h"
 
 App* g_pApp{ nullptr };
 
@@ -12,7 +13,7 @@ App::App()
     m_pGameInput = new GameInput;
 
     m_sceneList.push_back(new SceneBegin);
-    m_sceneList.push_back(nullptr); // ScenePlay
+    m_sceneList.push_back(new ScenePlay); 
     m_sceneList.push_back(nullptr); // SceneResult
 
     m_pGameScene = m_sceneList[m_sceneCurrent];
