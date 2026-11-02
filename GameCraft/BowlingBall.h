@@ -14,7 +14,8 @@ private:
 
     int m_txBall{ -1 };
 
-    float m_speed{ 180.0f };
+    float m_speed{ 140.0f };
+    float m_targetX{};
 
     int m_frameIndex{};
     long long m_animTimer{};
