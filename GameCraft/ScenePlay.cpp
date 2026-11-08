@@ -3,6 +3,7 @@
 #include <glc2d.h>
 #include "App.h"
 #include "GameInput.h"
+#include <algorithm>
 
 int ScenePlay::Init()
 {
@@ -16,9 +17,19 @@ int ScenePlay::Init()
         return -1;
     }
 
-    if (0 > m_ball.Init())
+    m_txStraightBall = g2_TextureLoad( "resource/Texture/Ball/ball_red_roll.png", 0 );
+
+    if (0 > m_txStraightBall)
     {
         m_player.Destroy();
+        return -1;
+    }
+
+    m_spawnManager.Init();
+    m_balls.clear();
+
+    if (0 > SpawnBall())
+    {
         return -1;
     }
 
@@ -49,7 +60,14 @@ int ScenePlay::Init()
 
 void ScenePlay::Destroy()
 {
-    m_ball.Destroy();
+    m_balls.clear();
+
+    if (0 <= m_txStraightBall)
+    {
+        g2_TextureRelease(m_txStraightBall);
+        m_txStraightBall = -1;
+    }
+
     m_player.Destroy();
 
     if (0 <= m_gameOverSound)
@@ -59,7 +77,6 @@ void ScenePlay::Destroy()
     }
 }
 
-
 int ScenePlay::Update()
 {
     // ESC로 일시정지 및 재개
@@ -68,7 +85,6 @@ int ScenePlay::Update()
         m_isPaused = !m_isPaused;
     }
 
-    // 일시정지 상태에서는 게임 갱신 중지
     if (m_isPaused)
     {
         return 0;
@@ -79,6 +95,7 @@ int ScenePlay::Update()
         g_pApp->GetDeltaTime() / 1000.0f
     };
 
+    // 충돌 후 결과 화면 전환
     if (m_isCollision)
     {
         m_collisionTimer += deltaTime;
@@ -99,23 +116,37 @@ int ScenePlay::Update()
         return -1;
     }
 
-    if (0 > m_ball.Update())
+    // 처음 10초는 공 하나씩 등장
+    if (m_survivalTime < 10.0f)
     {
-        return -1;
+        if (m_balls.empty())
+        {
+            if (0 > SpawnBall())
+            {
+                return -1;
+            }
+        }
+
+        m_spawnManager.Init();
+    }
+    else
+    {
+        m_spawnManager.Update(deltaTime);
+
+        if (m_spawnManager.CanSpawn())
+        {
+            if (0 > SpawnBall())
+            {
+                return -1;
+            }
+
+            m_spawnManager.ResetSpawnTimer();
+        }
     }
 
-    if (CollisionManager::CheckPlayerBall(m_player, m_ball))
+    if (0 > UpdateBalls())
     {
-        m_isCollision = true;
-        m_collisionTimer = 0.0f;
-
-        g_pApp->SetFinalScore(m_score);
-
-        g2_SoundStop(m_bgm);
-
-        // 게임오버 효과음
-        g2_SoundReset(m_gameOverSound);
-        g2_SoundPlay(m_gameOverSound);
+        return -1;
     }
 
     return 0;
@@ -130,7 +161,7 @@ int ScenePlay::Render()
     }
 
     
-    m_ball.Render();
+    RenderBalls();
     
     m_player.Render();
 
@@ -176,4 +207,75 @@ int ScenePlay::Render()
     }
 
     return 0;
+}
+
+int ScenePlay::SpawnBall()
+{
+    std::unique_ptr<BowlingBall> ball
+        = m_spawnManager.CreateStraightBall();
+
+    if (!ball)
+    {
+        return -1;
+    }
+
+    ball->SetTexture(m_txStraightBall);
+
+    if (0 > ball->Init())
+    {
+        return -1;
+    }
+
+    m_balls.push_back(std::move(ball));
+
+    return 0;
+}
+
+int ScenePlay::UpdateBalls()
+{
+    for (auto& ball : m_balls)
+    {
+        if (0 > ball->Update())
+        {
+            return -1;
+        }
+
+        if (CollisionManager::CheckPlayerBall(m_player, *ball))
+        {
+            m_isCollision = true;
+            m_collisionTimer = 0.0f;
+
+            g_pApp->SetFinalScore(m_score);
+
+            g2_SoundStop(m_bgm);
+
+            g2_SoundReset(m_gameOverSound);
+            g2_SoundPlay(m_gameOverSound);
+
+            return 0;
+        }
+    }
+
+    // 화면 아래로 지나간 공 제거
+    m_balls.erase(
+        std::remove_if(
+            m_balls.begin(),
+            m_balls.end(),
+            [](const std::unique_ptr<BowlingBall>& ball)
+            {
+                return ball->IsOutOfScreen();
+            }
+        ),
+        m_balls.end()
+    );
+
+    return 0;
+}
+
+void ScenePlay::RenderBalls()
+{
+    for (auto& ball : m_balls)
+    {
+        ball->Render();
+    }
 }

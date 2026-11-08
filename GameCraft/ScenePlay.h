@@ -1,7 +1,10 @@
 #pragma once
 #include "GameScene.h"
 #include "Player.h"
-#include "StraightBall.h"
+#include "SpawnManager.h"
+#include "BowlingBall.h"
+#include <vector>
+#include <memory>
 
 class ScenePlay : public GameScene
 {
@@ -12,8 +15,17 @@ public:
     int Render() override;
 
 private:
+    int SpawnBall();
+    int UpdateBalls();
+    void RenderBalls();
+
+private:
     Player m_player{};
-    StraightBall m_ball{};
+    SpawnManager m_spawnManager{};
+
+    std::vector<std::unique_ptr<BowlingBall>> m_balls{};
+
+    int m_txStraightBall{ -1 };
 
     bool m_isCollision{};
     float m_collisionTimer{};

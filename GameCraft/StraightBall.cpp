@@ -18,13 +18,6 @@ int StraightBall::Init()
         return -1;
     }
 
-    m_txBall = g2_TextureLoad( "resource/Texture/Ball/ball_red_roll.png", 0 );
-
-    if (0 > m_txBall)
-    {
-        return -1;
-    }
-
     Reset();
 
     return 0;

@@ -138,6 +138,7 @@
     <ClCompile Include="SceneBegin.cpp" />
     <ClCompile Include="ScenePlay.cpp" />
     <ClCompile Include="SceneResult.cpp" />
+    <ClCompile Include="SpawnManager.cpp" />
     <ClCompile Include="StraightBall.cpp" />
     <ClCompile Include="_main.cpp" />
   </ItemGroup>
@@ -158,6 +159,7 @@
     <ClInclude Include="SceneBegin.h" />
     <ClInclude Include="ScenePlay.h" />
     <ClInclude Include="SceneResult.h" />
+    <ClInclude Include="SpawnManager.h" />
     <ClInclude Include="StraightBall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

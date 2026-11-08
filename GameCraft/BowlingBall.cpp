@@ -25,6 +25,11 @@ namespace
 
 int BowlingBall::Init()
 {
+    if (0 > m_txBall)
+    {
+        return -1;
+    }
+
     BowlingBall::Reset();
 
     m_frameIndex = 0;
@@ -35,11 +40,6 @@ int BowlingBall::Init()
 
 void BowlingBall::Destroy()
 {
-    if (0 <= m_txBall)
-    {
-        g2_TextureRelease(m_txBall);
-        m_txBall = -1;
-    }
 }
 
 void BowlingBall::Reset()
@@ -87,11 +87,6 @@ int BowlingBall::Update()
     m_scale = BALL_MIN_SCALE
         + (BALL_MAX_SCALE - BALL_MIN_SCALE) * progress;
 
-    if (BALL_END_Y <= m_posY)
-    {
-        Reset();
-    }
-
     return 0;
 }
 
@@ -119,4 +114,14 @@ int BowlingBall::Render()
     g2_Draw2D(m_txBall, &source, &position, &scale);
 
     return 0;
+}
+
+void BowlingBall::SetTexture(int textureId)
+{
+    m_txBall = textureId;
+}
+
+bool BowlingBall::IsOutOfScreen() const
+{
+    return BALL_END_Y <= m_posY;
 }

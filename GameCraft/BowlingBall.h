@@ -10,6 +10,9 @@ public:
     int Update() override;
     int Render() override;
 
+    void SetTexture(int textureId);
+    bool IsOutOfScreen() const;
+
 protected:
     virtual void UpdateMovement(float progress) = 0;
     virtual void Reset();
