@@ -25,6 +25,12 @@ int SceneBegin::Init()
     m_blinkTimer = 0;
     m_isTextVisible = true;
 
+    if (!g2_SoundIsPlaying(m_bgm))
+    {
+        g2_SoundReset(m_bgm);
+        g2_SoundPlay(m_bgm, true);
+    }
+
     return 0;
 }
 
@@ -45,6 +51,12 @@ int SceneBegin::Update()
     {
         m_isTextVisible = !m_isTextVisible;
         m_blinkTimer -= BLINK_INTERVAL;
+    }
+
+    if (GetGameInput()->IsEscPressed())
+    {
+        g_pApp->RequestExit();
+        return 0;
     }
 
     if (GetGameInput()->IsEnterPressed())

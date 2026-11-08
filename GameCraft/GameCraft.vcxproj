@@ -137,6 +137,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneBegin.cpp" />
     <ClCompile Include="ScenePlay.cpp" />
+    <ClCompile Include="SceneResult.cpp" />
     <ClCompile Include="StraightBall.cpp" />
     <ClCompile Include="_main.cpp" />
   </ItemGroup>
@@ -156,6 +157,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="SceneBegin.h" />
     <ClInclude Include="ScenePlay.h" />
+    <ClInclude Include="SceneResult.h" />
     <ClInclude Include="StraightBall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

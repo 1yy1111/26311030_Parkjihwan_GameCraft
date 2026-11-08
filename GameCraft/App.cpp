@@ -3,6 +3,8 @@
 #include "GameScene.h"
 #include "SceneBegin.h"
 #include "ScenePlay.h"
+#include "SceneResult.h"
+#include <Windows.h>
 
 App* g_pApp{ nullptr };
 
@@ -14,7 +16,7 @@ App::App()
 
     m_sceneList.push_back(new SceneBegin);
     m_sceneList.push_back(new ScenePlay); 
-    m_sceneList.push_back(nullptr); // SceneResult
+    m_sceneList.push_back(new SceneResult); 
 
     m_pGameScene = m_sceneList[m_sceneCurrent];
 }
@@ -137,6 +139,11 @@ int App::Run()
     return 0;
 }
 
+void App::RequestExit()
+{
+    PostMessage(g2_GetHwnd(), WM_CLOSE, 0, 0);
+}
+
 void App::ChangeScene(GAME_PHASE nextScene)
 {
     m_sceneChanged = true;
@@ -146,4 +153,14 @@ void App::ChangeScene(GAME_PHASE nextScene)
 long long App::GetDeltaTime() const
 {
     return m_gameTime.GetDeltaTime();
+}
+
+void App::SetFinalScore(int score)
+{
+    m_finalScore = score;
+}
+
+int App::GetFinalScore() const
+{
+    return m_finalScore;
 }

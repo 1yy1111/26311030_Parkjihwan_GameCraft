@@ -18,10 +18,14 @@ public:
 	int Render();
 
 	int Run();
+	void RequestExit();
 
 public:
 	void ChangeScene(GAME_PHASE nextScene);
 	long long GetDeltaTime() const;
+
+	void SetFinalScore(int score);
+	int GetFinalScore() const;
 
 protected:
 	GraphicEngine::GAME_WINDOW m_gameWin
@@ -42,6 +46,8 @@ protected:
 	bool       m_sceneChanged	{};
 	GAME_PHASE m_sceneCurrent{ SCENE_BEGIN };
 	GAME_PHASE m_sceneNext		{};
+
+	int m_finalScore			{};
 
 };
 

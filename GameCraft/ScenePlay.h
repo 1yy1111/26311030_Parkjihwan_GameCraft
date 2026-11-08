@@ -14,9 +14,15 @@ public:
 private:
     Player m_player{};
     StraightBall m_ball{};
+
     bool m_isCollision{};
+    float m_collisionTimer{};
 
     float m_survivalTime{};
     int m_score{};
     int m_scoreFont{ -1 };
+
+    int m_gameOverSound{ -1 };
+
+    bool m_isPaused{};
 };

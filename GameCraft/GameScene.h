@@ -4,7 +4,7 @@ enum GAME_PHASE : int
 {
     SCENE_BEGIN = 0,
     SCENE_PLAY,
-    SCENE_PLAYRESULT,
+    SCENE_RESULT,
 };
 
 class GameScene

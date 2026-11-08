@@ -46,11 +46,6 @@ int GameScene::Init()
         g2_GetScnH() / bgTexH
     };
 
-    if (!g2_SoundIsPlaying(m_bgm))
-    {
-        g2_SoundPlay(m_bgm, true);
-    }
-
     return 0;
 }
 
