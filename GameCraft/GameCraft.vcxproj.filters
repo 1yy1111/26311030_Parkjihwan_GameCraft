@@ -51,6 +51,12 @@
     <ClCompile Include="BowlingBall.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="StraightBall.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -87,6 +93,12 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="BowlingBall.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="StraightBall.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionManager.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

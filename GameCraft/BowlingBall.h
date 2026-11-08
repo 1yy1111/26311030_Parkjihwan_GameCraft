@@ -1,3 +1,4 @@
+
 #pragma once
 #include "GameObject.h"
 
@@ -9,14 +10,15 @@ public:
     int Update() override;
     int Render() override;
 
-private:
-    void Reset();
+protected:
+    virtual void UpdateMovement(float progress) = 0;
+    virtual void Reset();
 
     int m_txBall{ -1 };
 
     float m_speed{ 240.0f };
-    float m_targetX{};
 
+private:
     int m_frameIndex{};
     long long m_animTimer{};
 };
