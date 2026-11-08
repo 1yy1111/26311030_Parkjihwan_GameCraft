@@ -10,6 +10,10 @@ public:
     virtual int Update() = 0;
     virtual int Render() = 0;
 
+    float GetPosX() const { return m_posX; }
+    float GetPosY() const { return m_posY; }
+    float GetScale() const { return m_scale; }
+
 protected:
     float m_posX{};
     float m_posY{};
