@@ -1,7 +1,7 @@
 #pragma once
 #include "GameScene.h"
 #include "Player.h"
-#include "BowlingBall.h"
+#include "StraightBall.h"
 
 class ScenePlay : public GameScene
 {
@@ -13,5 +13,10 @@ public:
 
 private:
     Player m_player{};
-    BowlingBall m_ball{};
+    StraightBall m_ball{};
+    bool m_isCollision{};
+
+    float m_survivalTime{};
+    int m_score{};
+    int m_scoreFont{ -1 };
 };
