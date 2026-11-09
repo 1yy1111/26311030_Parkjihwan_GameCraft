@@ -127,11 +127,11 @@ int ScenePlay::Update()
             }
         }
 
-        m_spawnManager.Init();
+        m_spawnManager.ResetSpawnTimer();
     }
     else
     {
-        m_spawnManager.Update(deltaTime);
+        m_spawnManager.Update(deltaTime, m_survivalTime);
 
         if (m_spawnManager.CanSpawn())
         {
