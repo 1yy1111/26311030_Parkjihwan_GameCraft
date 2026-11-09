@@ -5,8 +5,21 @@
 #include "GameInput.h"
 #include <algorithm>
 
+
 int ScenePlay::Init()
 {
+    // 게임 상태 초기화
+    m_survivalTime = 0.0f;
+    m_score = 0;
+
+    m_isCollision = false;
+    m_collisionTimer = 0.0f;
+    m_isPaused = false;
+
+    m_balls.clear();
+    m_items.clear();
+
+    // Scene 및 플레이어 초기화
     if (0 > GameScene::Init())
     {
         return -1;
@@ -17,72 +30,52 @@ int ScenePlay::Init()
         return -1;
     }
 
-    m_txStraightBall = g2_TextureLoad( "resource/Texture/Ball/ball_red_roll.png", 0 );
-    m_txCurveBall = g2_TextureLoad( "resource/Texture/Ball/ball_green_roll.png", 0 );
+    // 텍스처 로드
+    m_txStraightBall = g2_TextureLoad("resource/Texture/Ball/ball_red_roll.png", 0);
+    m_txCurveBall = g2_TextureLoad("resource/Texture/Ball/ball_green_roll.png", 0);
+    m_txSpeedItem = g2_TextureLoad("resource/Texture/Item/item_speed.png", 0);
 
-    if (0 > m_txStraightBall)
-    {
-        m_player.Destroy();
-        return -1;
-    }
-
-    if (0 > m_txCurveBall)
+    if (0 > m_txStraightBall || 0 > m_txCurveBall || 0 > m_txSpeedItem)
     {
         return -1;
     }
 
+    // 폰트 생성
+    m_scoreFont = g2_FontCreate("Neo둥근모", 24);
+
+    // 효과음 로드
+    m_gameOverSound = g2_SoundLoad("resource/Sound/SFX/game_over.mp3");
+    m_itemPickupSound = g2_SoundLoad("resource/Sound/SFX/item_pickup.mp3");
+
+    if (0 > m_gameOverSound || 0 > m_itemPickupSound)
+    {
+        return -1;
+    }
+
+    // 생성 관리자 초기화
     m_spawnManager.Init();
-    m_balls.clear();
 
+    // 첫 번째 볼링공 생성
     if (0 > SpawnBall())
     {
         return -1;
     }
 
-    m_txSpeedItem = g2_TextureLoad( "resource/Texture/Item/item_speed.png", 0 );
-
-    if (0 > m_txSpeedItem)
-    {
-        return -1;
-    }
-
-    m_items.clear();
-
-    m_survivalTime = 0.0f;
-    m_score = 0;
-    m_scoreFont = g2_FontCreate("Neo둥근모", 24);
-
-    m_isCollision = false;
-    m_collisionTimer = 0.0f;
-
-    m_gameOverSound = g2_SoundLoad( "resource/Sound/SFX/game_over.mp3" );
-
-    m_itemPickupSound = g2_SoundLoad("resource/Sound/SFX/item_pickup.mp3");
-
-    if (0 > m_itemPickupSound)
-    {
-        return -1;
-    }
-
-    if (0 > m_gameOverSound)
-    {
-        return -1;
-    }
-
+    // BGM 재생
     if (!g2_SoundIsPlaying(m_bgm))
     {
         g2_SoundReset(m_bgm);
         g2_SoundPlay(m_bgm, true);
     }
 
-    m_isPaused = false;
-
-    return 0;   
+    return 0;
 }
+
 
 void ScenePlay::Destroy()
 {
     m_balls.clear();
+    m_items.clear();
 
     if (0 <= m_txStraightBall)
     {
@@ -103,8 +96,6 @@ void ScenePlay::Destroy()
         g2_SoundRelease(m_gameOverSound);
         m_gameOverSound = -1;
     }
-
-    m_items.clear();
 
     if (0 <= m_txSpeedItem)
     {
