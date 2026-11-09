@@ -3,6 +3,7 @@
 #include "StraightBall.h"
 #include "CurveBall.h"
 #include <random>
+#include "Item.h"
 
 namespace
 {
@@ -14,6 +15,9 @@ void SpawnManager::Init()
     m_spawnTimer = 0.0f;
     m_survivalTime = 0.0f;
 
+    m_itemSpawnTimer = 0.0f;
+    m_itemSpawnInterval = 12.0f;
+
     UpdateSpawnInterval();
 }
 
@@ -21,6 +25,8 @@ void SpawnManager::Update(float deltaTime, float survivalTime)
 {
     m_spawnTimer += deltaTime;
     m_survivalTime = survivalTime;
+
+    m_itemSpawnTimer += deltaTime;
 }
 
 bool SpawnManager::CanSpawn() const
@@ -67,15 +73,15 @@ void SpawnManager::UpdateSpawnInterval()
     };
 
     m_spawnInterval = randomInterval(randomEngine);
-}
 
+}
 
 std::unique_ptr<BowlingBall> SpawnManager::CreateBall(
     float survivalTime,
     int straightTexture,
     int curveTexture)
 {
-    // 30초 이전에는 직진 공만 생성
+    // 30초 이전에는 직진만 생성
     if (survivalTime < 30.0f)
     {
         std::unique_ptr<BowlingBall> ball
@@ -86,7 +92,7 @@ std::unique_ptr<BowlingBall> SpawnManager::CreateBall(
         return ball;
     }
 
-    // 30초 이후에는 직진 공과 커브 공 혼합
+    // 30초 이후에는 직진, 커브 같이
     std::uniform_int_distribution<int> randomType{ 0, 1 };
 
     if (0 == randomType(randomEngine))
@@ -107,5 +113,20 @@ std::unique_ptr<BowlingBall> SpawnManager::CreateBall(
 
         return ball;
     }
+}
+
+bool SpawnManager::CanSpawnItem() const
+{
+    return m_itemSpawnInterval <= m_itemSpawnTimer;
+}
+
+void SpawnManager::ResetItemSpawnTimer()
+{
+    m_itemSpawnTimer = 0.0f;
+}
+
+std::unique_ptr<Item> SpawnManager::CreateItem()
+{
+    return std::make_unique<Item>();
 }
 

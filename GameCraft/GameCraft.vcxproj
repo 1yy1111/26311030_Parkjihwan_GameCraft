@@ -135,6 +135,7 @@
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="GameTime.cpp" />
     <ClCompile Include="GraphicEngine.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneBegin.cpp" />
     <ClCompile Include="ScenePlay.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="GameTime.h" />
     <ClInclude Include="GraphicEngine.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SceneBegin.h" />
     <ClInclude Include="ScenePlay.h" />

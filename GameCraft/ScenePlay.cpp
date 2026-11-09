@@ -39,6 +39,15 @@ int ScenePlay::Init()
         return -1;
     }
 
+    m_txSpeedItem = g2_TextureLoad( "resource/Texture/Item/item_speed.png", 0 );
+
+    if (0 > m_txSpeedItem)
+    {
+        return -1;
+    }
+
+    m_items.clear();
+
     m_survivalTime = 0.0f;
     m_score = 0;
     m_scoreFont = g2_FontCreate("Neo둥근모", 24);
@@ -47,6 +56,13 @@ int ScenePlay::Init()
     m_collisionTimer = 0.0f;
 
     m_gameOverSound = g2_SoundLoad( "resource/Sound/SFX/game_over.mp3" );
+
+    m_itemPickupSound = g2_SoundLoad("resource/Sound/SFX/item_pickup.mp3");
+
+    if (0 > m_itemPickupSound)
+    {
+        return -1;
+    }
 
     if (0 > m_gameOverSound)
     {
@@ -87,6 +103,20 @@ void ScenePlay::Destroy()
         g2_SoundRelease(m_gameOverSound);
         m_gameOverSound = -1;
     }
+
+    m_items.clear();
+
+    if (0 <= m_txSpeedItem)
+    {
+        g2_TextureRelease(m_txSpeedItem);
+        m_txSpeedItem = -1;
+    }
+
+    if (0 <= m_itemPickupSound)
+    {
+        g2_SoundRelease(m_itemPickupSound);
+        m_itemPickupSound = -1;
+    }
 }
 
 int ScenePlay::Update()
@@ -123,12 +153,18 @@ int ScenePlay::Update()
     m_survivalTime += deltaTime;
     m_score = static_cast<int>(m_survivalTime);
 
+    // 아이템 효과 지속시간 갱신
+    m_player.UpdateSpeedBoost(deltaTime);
+    
     if (0 > m_player.Update())
     {
         return -1;
     }
 
-    // 처음 10초는 공 하나씩 등장
+    // 생성 타이머 갱신
+    m_spawnManager.Update(deltaTime, m_survivalTime);
+
+    // 처음 10초는 공 하나씩 생성
     if (m_survivalTime < 10.0f)
     {
         if (m_balls.empty())
@@ -141,22 +177,34 @@ int ScenePlay::Update()
 
         m_spawnManager.ResetSpawnTimer();
     }
-    else
+    else if (m_spawnManager.CanSpawn())
     {
-        m_spawnManager.Update(deltaTime, m_survivalTime);
-
-        if (m_spawnManager.CanSpawn())
+        if (0 > SpawnBall())
         {
-            if (0 > SpawnBall())
-            {
-                return -1;
-            }
-
-            m_spawnManager.ResetSpawnTimer();
+            return -1;
         }
+
+        m_spawnManager.ResetSpawnTimer();
     }
 
+    // 아이템 생성
+    if (m_spawnManager.CanSpawnItem())
+    {
+        if (0 > SpawnItem())
+        {
+            return -1;
+        }
+
+        m_spawnManager.ResetItemSpawnTimer();
+    }
+
+    // 공과 아이템 갱신
     if (0 > UpdateBalls())
+    {
+        return -1;
+    }
+
+    if (!m_isCollision && 0 > UpdateItems())
     {
         return -1;
     }
@@ -172,9 +220,8 @@ int ScenePlay::Render()
         return -1;
     }
 
-    
     RenderBalls();
-    
+    RenderItems();
     m_player.Render();
 
     g2_FontDrawText(
@@ -215,7 +262,27 @@ int ScenePlay::Render()
             0xFFFFFFFF,
             "PRESS ESC TO RESUME"
         );
+    }
 
+    if (m_player.IsSpeedBoostActive())
+    {
+        VEC2 itemPos{ 925.0f, 20.0f };
+        VEC2 itemScale{ 0.5f, 0.5f };
+
+        g2_Draw2D(
+            m_txSpeedItem,
+            nullptr,
+            &itemPos,
+            &itemScale
+        );
+
+        g2_FontDrawText(
+            m_scoreFont,
+            { 925, 90 },
+            0xFFFFFFFF,
+            "%.1fs",
+            m_player.GetSpeedBoostRemainingTime()
+        );
     }
 
     return 0;
@@ -293,5 +360,74 @@ void ScenePlay::RenderBalls()
     for (auto& ball : m_balls)
     {
         ball->Render();
+    }
+}
+
+int ScenePlay::SpawnItem()
+{
+    std::unique_ptr<Item> item = m_spawnManager.CreateItem();
+
+    if (!item)
+    {
+        return -1;
+    }
+
+    item->SetTexture(m_txSpeedItem);
+
+    if (0 > item->Init())
+    {
+        return -1;
+    }
+
+    m_items.push_back(std::move(item));
+
+    return 0;
+}
+
+
+int ScenePlay::UpdateItems()
+{
+    for (auto& item : m_items)
+    {
+        if (0 > item->Update())
+        {
+            return -1;
+        }
+    }
+
+    m_items.erase(
+        std::remove_if(
+            m_items.begin(),
+            m_items.end(),
+            [this](const std::unique_ptr<Item>& item)
+            {
+                if (CollisionManager::CheckPlayerItem(m_player, *item))
+                {
+                    if (ItemType::Speed == item->GetType())
+                    {
+                        m_player.ActivateSpeedBoost();
+                    }
+
+                    g2_SoundReset(m_itemPickupSound);
+                    g2_SoundPlay(m_itemPickupSound);
+
+                    return true;
+                }
+
+                return item->IsOutOfScreen();
+            }
+        ),
+        m_items.end()
+    );
+
+    return 0;
+}
+
+
+void ScenePlay::RenderItems()
+{
+    for (auto& item : m_items)
+    {
+        item->Render();
     }
 }
