@@ -1,6 +1,7 @@
 #include "SpawnManager.h"
 #include "BowlingBall.h"
 #include "StraightBall.h"
+#include "CurveBall.h"
 #include <random>
 
 namespace
@@ -68,7 +69,43 @@ void SpawnManager::UpdateSpawnInterval()
     m_spawnInterval = randomInterval(randomEngine);
 }
 
-std::unique_ptr<BowlingBall> SpawnManager::CreateStraightBall()
+
+std::unique_ptr<BowlingBall> SpawnManager::CreateBall(
+    float survivalTime,
+    int straightTexture,
+    int curveTexture)
 {
-    return std::make_unique<StraightBall>();
+    // 30초 이전에는 직진 공만 생성
+    if (survivalTime < 30.0f)
+    {
+        std::unique_ptr<BowlingBall> ball
+            = std::make_unique<StraightBall>();
+
+        ball->SetTexture(straightTexture);
+
+        return ball;
+    }
+
+    // 30초 이후에는 직진 공과 커브 공 혼합
+    std::uniform_int_distribution<int> randomType{ 0, 1 };
+
+    if (0 == randomType(randomEngine))
+    {
+        std::unique_ptr<BowlingBall> ball
+            = std::make_unique<StraightBall>();
+
+        ball->SetTexture(straightTexture);
+
+        return ball;
+    }
+    else
+    {
+        std::unique_ptr<BowlingBall> ball
+            = std::make_unique<CurveBall>();
+
+        ball->SetTexture(curveTexture);
+
+        return ball;
+    }
 }
+

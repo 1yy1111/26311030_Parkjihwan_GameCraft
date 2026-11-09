@@ -18,10 +18,16 @@ int ScenePlay::Init()
     }
 
     m_txStraightBall = g2_TextureLoad( "resource/Texture/Ball/ball_red_roll.png", 0 );
+    m_txCurveBall = g2_TextureLoad( "resource/Texture/Ball/ball_green_roll.png", 0 );
 
     if (0 > m_txStraightBall)
     {
         m_player.Destroy();
+        return -1;
+    }
+
+    if (0 > m_txCurveBall)
+    {
         return -1;
     }
 
@@ -66,6 +72,12 @@ void ScenePlay::Destroy()
     {
         g2_TextureRelease(m_txStraightBall);
         m_txStraightBall = -1;
+    }
+
+    if (0 <= m_txCurveBall)
+    {
+        g2_TextureRelease(m_txCurveBall);
+        m_txCurveBall = -1;
     }
 
     m_player.Destroy();
@@ -209,17 +221,20 @@ int ScenePlay::Render()
     return 0;
 }
 
+
 int ScenePlay::SpawnBall()
 {
     std::unique_ptr<BowlingBall> ball
-        = m_spawnManager.CreateStraightBall();
+        = m_spawnManager.CreateBall(
+            m_survivalTime,
+            m_txStraightBall,
+            m_txCurveBall
+        );
 
     if (!ball)
     {
         return -1;
     }
-
-    ball->SetTexture(m_txStraightBall);
 
     if (0 > ball->Init())
     {
@@ -230,6 +245,7 @@ int ScenePlay::SpawnBall()
 
     return 0;
 }
+
 
 int ScenePlay::UpdateBalls()
 {

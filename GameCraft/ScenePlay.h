@@ -26,6 +26,7 @@ private:
     std::vector<std::unique_ptr<BowlingBall>> m_balls{};
 
     int m_txStraightBall{ -1 };
+    int m_txCurveBall{ -1 };
 
     bool m_isCollision{};
     float m_collisionTimer{};

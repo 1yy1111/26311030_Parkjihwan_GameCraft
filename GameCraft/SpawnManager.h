@@ -14,7 +14,11 @@ public:
     bool CanSpawn() const;
     void ResetSpawnTimer();
 
-    std::unique_ptr<BowlingBall> CreateStraightBall();
+    std::unique_ptr<BowlingBall> CreateBall(
+        float survivalTime,
+        int straightTexture,
+        int curveTexture
+    );
 
 private:
     void UpdateSpawnInterval();
