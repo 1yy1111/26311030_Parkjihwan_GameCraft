@@ -1,2 +1,137 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ClassDiagram /> 
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="App" Collapsed="true">
+    <Position X="10.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAwAAAAAACAAEQAAAFAAAAAAIABAgAAAAxACAAAhiiI=</HashCode>
+      <FileName>App.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BowlingBall" Collapsed="true">
+    <Position X="2.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAABAAAAEAAAAAEACBAAgAAgRACAAIAAAA=</HashCode>
+      <FileName>BowlingBall.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Character" Collapsed="true">
+    <Position X="6" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAIAA=</HashCode>
+      <FileName>Character.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollisionManager" Collapsed="true">
+    <Position X="12.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAQAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CollisionManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CurveBall" Collapsed="true">
+    <Position X="3.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAACEAAAAAQAAAAACAAAAAAA=</HashCode>
+      <FileName>CurveBall.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameInput" Collapsed="true">
+    <Position X="14.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEQAgIAABAQAAIAAAAAEAAAAQAAAAAAAAAICAAAAkAA=</HashCode>
+      <FileName>GameInput.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameObject" Collapsed="true">
+    <Position X="4.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABQAAAAAAAAAACAAAAAAAAAQAABAAAAAIBACAAAAYAA=</HashCode>
+      <FileName>GameObject.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameScene" Collapsed="true">
+    <Position X="3.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAIAAAAAAAAAAABAAAAABAAAAAABACAAEAAEE=</HashCode>
+      <FileName>GameScene.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameTime" Collapsed="true">
+    <Position X="10.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAEgAAQAAAAQAAEAAAAAAAAAAAAQQAAAACAAAAAAA=</HashCode>
+      <FileName>GameTime.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GraphicEngine" Collapsed="true">
+    <Position X="12.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAABAAAAAABgCAAAAAAI=</HashCode>
+      <FileName>GraphicEngine.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Item" Collapsed="true">
+    <Position X="8.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAIAAAIAAAAAAAAAAAAAAAACBAAwEAgBACAAAAAAA=</HashCode>
+      <FileName>Item.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Player" Collapsed="true">
+    <Position X="6" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAQAAAAAAEAAAAAAAAAAAAAARABAACAAABACAQAAAAA=</HashCode>
+      <FileName>Player.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SceneBegin" Collapsed="true">
+    <Position X="6" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAQBAAAAAAAAgAAAAAAAABAAAAAABACAAAAgAA=</HashCode>
+      <FileName>SceneBegin.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ScenePlay" Collapsed="true">
+    <Position X="1.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYAIgFASAAEAkBAAgAMAQAAKABAAQAAABQCAAAAAQA=</HashCode>
+      <FileName>ScenePlay.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SceneResult" Collapsed="true">
+    <Position X="3.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAABAAAAAABACAAAAAAA=</HashCode>
+      <FileName>SceneResult.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpawnManager" Collapsed="true">
+    <Position X="14.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACxAAAEAACAGAAAAAAACAAACAAAAAEAAAAACABAAAAA=</HashCode>
+      <FileName>SpawnManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StraightBall" Collapsed="true">
+    <Position X="1.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAEAAAAAQAAAAACAAAAAAA=</HashCode>
+      <FileName>StraightBall.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="GAME_PHASE" Collapsed="true">
+    <Position X="10.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAAAAAAAAgAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>GameScene.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ItemType" Collapsed="true">
+    <Position X="12.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Item.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="맑은 고딕" Size="9" />
+</ClassDiagram>
